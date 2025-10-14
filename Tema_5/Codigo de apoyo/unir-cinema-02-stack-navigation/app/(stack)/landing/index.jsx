@@ -98,7 +98,7 @@ export default function LandingScreen() {
                 {loading ? (
                     <View className="flex-1 justify-center items-center py-20">
                         <ActivityIndicator size="large" color="#60A5FA"/>
-                        <Text className="text-gray-400 mt-4">Cargando películas...</Text>
+                        <Text className="text-white text-center mt-4">Cargando películas...</Text>
                     </View>
                 ) : (
                     /* Lista de Películas */

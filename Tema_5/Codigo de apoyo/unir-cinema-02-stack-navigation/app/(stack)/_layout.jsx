@@ -1,7 +1,5 @@
 import {router, Stack, useNavigation} from "expo-router";
 import { MoviesProvider } from '../../context/MoviesContext';
-import {Ionicons} from "@expo/vector-icons";
-import {Pressable} from "react-native";
 
 const StackLayout = () => {
 
@@ -21,7 +19,6 @@ const StackLayout = () => {
                     contentStyle: {backgroundColor: "white"}, //Prueba a cambiar el color de fondo, veras que pasa
                     headerStyle: {backgroundColor: "#131827",},
                     headerTintColor: "white",
-                    headerBackTitleVisible: false,
                     headerBackTitle: "Atrás",
                     headerBackVisible: true
                     //headerTitleStyle: {fontWeight: "bold",},
