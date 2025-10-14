@@ -8,11 +8,9 @@ SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
     // Cargamos las fuentes necesarias para la aplicación
-
     const [fontsLoaded, error] = useFonts({
         "SpaceMono-Regular": require("../assets/fonts/SpaceMono-Regular.ttf"),
     });
-
     // Ocultamos el SplashScreen cuando las fuentes estén cargadas
     useEffect(() => {
         if (error) throw error;
@@ -21,7 +19,6 @@ const RootLayout = () => {
     }, [fontsLoaded, error]);
 
     if (!fontsLoaded && !error) return null;
-
     return <Slot />;
 };
 

@@ -1,14 +1,7 @@
-import {router, Stack, useNavigation} from "expo-router";
+import { Stack } from "expo-router";
 import { MoviesProvider } from '../../context/MoviesContext';
 
 const StackLayout = () => {
-
-    const navigation = useNavigation();
-    const onHeaderLeftPress = (canGoBack) => {
-        if (canGoBack) {
-            router.back();
-        }
-    }
 
     return (
         <MoviesProvider>
@@ -16,7 +9,6 @@ const StackLayout = () => {
                 screenOptions={{
                     headerShown: true,
                     headerShadowVisible: true,
-                    contentStyle: {backgroundColor: "white"}, //Prueba a cambiar el color de fondo, veras que pasa
                     headerStyle: {backgroundColor: "#131827",},
                     headerTintColor: "white",
                     headerBackTitle: "Atrás",
