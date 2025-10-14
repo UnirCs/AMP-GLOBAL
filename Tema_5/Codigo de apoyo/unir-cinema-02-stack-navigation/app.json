@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "UNIR-Cinema-01-Componentes-Basicos",
-    "slug": "UNIR-Cinema-01-Componentes-Basicos",
+    "name": "UNIR-Cinema-02-Stack-Navigation",
+    "slug": "UNIR-Cinema-02-Stack-Navigation",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
