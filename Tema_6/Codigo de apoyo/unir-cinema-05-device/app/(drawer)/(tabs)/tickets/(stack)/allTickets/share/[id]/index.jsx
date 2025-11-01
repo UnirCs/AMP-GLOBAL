@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, Pressable, Alert } from 'react-native';
+import { View, Text, TextInput, FlatList, Pressable, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useMoviesContext } from '../../../../../../../../context/MoviesContext';
 import * as Contacts from 'expo-contacts';
@@ -80,52 +80,60 @@ const ShareTicketsScreen = () => {
     );
 
     return (
-        <View className="flex-1 bg-gray-900">
-            {/* Barra de búsqueda */}
-            <View style={{ paddingHorizontal: 16, paddingTop: 24, paddingBottom: 20 }}>
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    backgroundColor: '#4b5563',
-                    paddingHorizontal: 16,
-                    paddingVertical: 16,
-                    borderWidth: 1,
-                    borderColor: '#6b7280'
-                }}>
-                    <Ionicons name="search-outline" size={22} color="#9ca3af" />
-                    <TextInput
-                        placeholder="Buscar contactos"
-                        placeholderTextColor="#9ca3af"
-                        value={search}
-                        onChangeText={setSearch}
-                        style={{
-                            flex: 1,
-                            marginLeft: 12,
-                            color: '#ffffff',
-                            fontSize: 16
-                        }}
-                        autoFocus={true}
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ flex: 1 }}
+            className="bg-gray-900"
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View className="flex-1">
+                    {/* Barra de búsqueda */}
+                    <View style={{ paddingHorizontal: 16, paddingTop: 24, paddingBottom: 20 }}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            backgroundColor: '#4b5563',
+                            paddingHorizontal: 16,
+                            paddingVertical: 16,
+                            borderWidth: 1,
+                            borderColor: '#6b7280'
+                        }}>
+                            <Ionicons name="search-outline" size={22} color="#9ca3af" />
+                            <TextInput
+                                placeholder="Buscar contactos"
+                                placeholderTextColor="#9ca3af"
+                                value={search}
+                                onChangeText={setSearch}
+                                style={{
+                                    flex: 1,
+                                    marginLeft: 12,
+                                    color: '#ffffff',
+                                    fontSize: 16
+                                }}
+                                autoFocus={true}
+                            />
+                        </View>
+                    </View>
+
+                    {/* Lista de contactos con margen */}
+                    <FlatList
+                        data={filteredContacts}
+                        keyExtractor={(item) => item.id}
+                        renderItem={renderContact}
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
+                        keyboardShouldPersistTaps="handled"
+                        ListEmptyComponent={
+                            <View className="justify-center items-center mt-10">
+                                <Text className="text-gray-400 text-center">
+                                    {contacts.length === 0 ? 'No se encontraron contactos' : 'No hay resultados para tu búsqueda'}
+                                </Text>
+                            </View>
+                        }
                     />
                 </View>
-            </View>
-
-            {/* Lista de contactos con margen */}
-            <FlatList
-                data={filteredContacts}
-                keyExtractor={(item) => item.id}
-                renderItem={renderContact}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
-                keyboardShouldPersistTaps="handled"
-                ListEmptyComponent={
-                    <View className="justify-center items-center mt-10">
-                        <Text className="text-gray-400 text-center">
-                            {contacts.length === 0 ? 'No se encontraron contactos' : 'No hay resultados para tu búsqueda'}
-                        </Text>
-                    </View>
-                }
-            />
-        </View>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 };
 
