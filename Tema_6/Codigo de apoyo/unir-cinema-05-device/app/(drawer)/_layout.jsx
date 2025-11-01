@@ -1,20 +1,20 @@
 import React from 'react';
 import {Drawer} from "expo-router/drawer";
 import {Ionicons} from "@expo/vector-icons";
-import CinemaDrawer from "../../components/CinemaDrawer";
+import CustomDrawer from "../../components/CinemDrawer";
 
-const DrawerLayout = (props) => {
+const DrawerLayout = () => {
 
     return (
         <Drawer
-            drawerContent = {CinemaDrawer}
+            drawerContent = {CustomDrawer}
             screenOptions={{
                 overlayColor: 'rgba(0,0,0,0.4)',
                 drawerActiveTintColor: '#427787',
                 headerShadowVisible: false,
                 headerShown: false,
                 sceneContainerStyle: {
-                    backgroundColor: 'red'
+                    backgroundColor: 'transparent'
                 }
             }}
         >
