@@ -1,6 +1,6 @@
 import React from "react";
-import { Redirect } from "expo-router";
-import {SafeAreaView} from "react-native-safe-area-context";
+import {Redirect} from "expo-router";
+import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 
 /**
  * Componente principal de la aplicación
@@ -10,9 +10,11 @@ import {SafeAreaView} from "react-native-safe-area-context";
  */
 const CinemaApp = () => {
     return (
-        <SafeAreaView className="flex-1">
-            <Redirect href="/home" />
-        </SafeAreaView>
+        <SafeAreaProvider>
+            <SafeAreaView className="flex-1">
+                <Redirect href="/home"/>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 
