@@ -6,12 +6,13 @@ import {useFonts} from "expo-font";
 
 export default function App() {
 
+    const [tema, setTema] = useState('claro');
+
     const [fontsLoaded, error] = useFonts({
         'Rasa-VariableFont': require('./assets/fonts/Rasa-VariableFont.ttf')
     });
-    if (!fontsLoaded && !error) return null;
 
-    const [tema, setTema] = useState('claro');
+    if (!fontsLoaded && !error) return null;
 
     const cambiarTema = () => {
         if (tema === 'claro') {
