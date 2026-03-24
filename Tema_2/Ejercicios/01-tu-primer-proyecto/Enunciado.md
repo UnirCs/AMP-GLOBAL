@@ -99,3 +99,27 @@ A continuación tienes una selección de propiedades que puedes usar en tus esti
 | `alignItems` | Alineación de los hijos en el eje secundario (`'center'`, `'flex-start'`, `'flex-end'`) | [Ver docs](https://reactnative.dev/docs/layout-props#alignitems) |
 | `justifyContent` | Distribución de los hijos en el eje principal | [Ver docs](https://reactnative.dev/docs/layout-props#justifycontent) |
 | `opacity` | Nivel de transparencia del elemento (0 a 1) | [Ver docs](https://reactnative.dev/docs/view-style-props#opacity) |
+
+---
+
+## Referencia del archivo `app.json`
+
+El archivo **`app.json`** es el fichero de configuración principal de tu proyecto Expo. En él puedes definir el nombre de la app, el icono, la pantalla de splash, los permisos, las versiones de iOS y Android, y muchos otros ajustes que afectan al comportamiento y la apariencia de tu aplicación.
+
+Algunas de las propiedades más habituales que encontrarás son:
+
+| Propiedad | Descripción |
+|---|---|
+| `name` | Nombre de la aplicación que se mostrará al usuario |
+| `slug` | Identificador único del proyecto en Expo (sin espacios) |
+| `version` | Versión de la aplicación (p. ej. `"1.0.0"`) |
+| `icon` | Ruta al icono de la app (imagen cuadrada, mínimo 1024×1024 px) |
+| `splash` | Configuración de la pantalla de carga inicial (imagen, color de fondo, etc.) |
+| `orientation` | Orientación de pantalla permitida (`"portrait"`, `"landscape"`, `"default"`) |
+| `ios` | Opciones específicas para iOS (bundle identifier, permisos, etc.) |
+| `android` | Opciones específicas para Android (package name, permisos, etc.) |
+| `extra` | Objeto para pasar variables de configuración personalizadas a la app |
+
+> 📖 **Documentación completa:** Consulta todas las propiedades disponibles y sus valores posibles en la referencia oficial de Expo:
+> 👉 [https://docs.expo.dev/versions/latest/config/app/](https://docs.expo.dev/versions/latest/config/app/)
+
