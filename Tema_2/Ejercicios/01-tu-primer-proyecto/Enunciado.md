@@ -64,6 +64,9 @@ Para esta pantalla tan sencilla, utilizarás únicamente los siguientes componen
 | `View` | Contenedor principal para estructurar la pantalla | [Ver docs](https://reactnative.dev/docs/view) |
 | `Text` | Para mostrar textos (nombre, puesto, descripción) | [Ver docs](https://reactnative.dev/docs/text) |
 | `Image` | Para mostrar tu foto | [Ver docs](https://reactnative.dev/docs/image) |
+| `ScrollView` | Contenedor con scroll para el contenido extenso | [Ver docs](https://reactnative.dev/docs/scrollview) |
+
+> 💡 **Sugerencia de estructura:** Puedes colocar la foto y el nombre en un `View` fijo en la parte superior (fuera del `ScrollView`) y dejar el resto del contenido —descripción, datos de contacto, etc.— dentro del `ScrollView`. Así la cabecera siempre será visible mientras el usuario hace scroll.
 
 ### Requisitos
 
@@ -73,3 +76,26 @@ Para esta pantalla tan sencilla, utilizarás únicamente los siguientes componen
 - Mostrar tu puesto actual y una breve descripción con componentes `Text`.
 - **Jugar un poco con los estilos** usando `StyleSheet`: cambia colores, tamaños de fuente, márgenes, alineaciones, etc. ¡Sé creativo/a!
 
+---
+
+## Referencia de propiedades de StyleSheet
+
+A continuación tienes una selección de propiedades que puedes usar en tus estilos. Consulta la documentación oficial de cada una para entender todos los valores posibles:
+
+| Propiedad | Qué controla | Documentación |
+|---|---|---|
+| `backgroundColor` | Color de fondo del elemento | [Ver docs](https://reactnative.dev/docs/view-style-props#backgroundcolor) |
+| `color` | Color del texto | [Ver docs](https://reactnative.dev/docs/text-style-props#color) |
+| `fontSize` | Tamaño de la fuente en puntos | [Ver docs](https://reactnative.dev/docs/text-style-props#fontsize) |
+| `fontWeight` | Grosor de la fuente (`'normal'`, `'bold'`, `'600'`, etc.) | [Ver docs](https://reactnative.dev/docs/text-style-props#fontweight) |
+| `textAlign` | Alineación horizontal del texto (`'left'`, `'center'`, `'right'`) | [Ver docs](https://reactnative.dev/docs/text-style-props#textalign) |
+| `lineHeight` | Altura de línea para mejorar la legibilidad | [Ver docs](https://reactnative.dev/docs/text-style-props#lineheight) |
+| `margin` / `marginTop` / `marginBottom` | Espacio exterior alrededor del elemento | [Ver docs](https://reactnative.dev/docs/layout-props#margin) |
+| `padding` / `paddingHorizontal` / `paddingVertical` | Espacio interior dentro del elemento | [Ver docs](https://reactnative.dev/docs/layout-props#padding) |
+| `borderRadius` | Radio de las esquinas redondeadas | [Ver docs](https://reactnative.dev/docs/view-style-props#borderradius) |
+| `borderWidth` / `borderColor` | Grosor y color del borde del elemento | [Ver docs](https://reactnative.dev/docs/view-style-props#borderwidth) |
+| `width` / `height` | Dimensiones fijas del elemento | [Ver docs](https://reactnative.dev/docs/layout-props#width) |
+| `flex` | Proporción del espacio disponible que ocupa el elemento | [Ver docs](https://reactnative.dev/docs/layout-props#flex) |
+| `alignItems` | Alineación de los hijos en el eje secundario (`'center'`, `'flex-start'`, `'flex-end'`) | [Ver docs](https://reactnative.dev/docs/layout-props#alignitems) |
+| `justifyContent` | Distribución de los hijos en el eje principal | [Ver docs](https://reactnative.dev/docs/layout-props#justifycontent) |
+| `opacity` | Nivel de transparencia del elemento (0 a 1) | [Ver docs](https://reactnative.dev/docs/view-style-props#opacity) |
