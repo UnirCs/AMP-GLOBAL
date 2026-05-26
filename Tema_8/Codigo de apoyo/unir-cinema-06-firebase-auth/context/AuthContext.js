@@ -74,6 +74,13 @@ export const AuthProvider = ({ children }) => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log('✅ Login exitoso:', userCredential.user.email);
+
+            // LOG DEL JWT (ID Token de Firebase) — solo con fines de depuración/académicos
+            const idToken = await userCredential.user.getIdToken();
+            console.log('🪙 Firebase JWT (ID Token):');
+            console.log(idToken);
+            console.log('ℹ️  Puedes inspeccionar el token en: https://jwt.io');
+
             return { success: true };
         } catch (error) {
             console.error('❌ Error en login:', error);
