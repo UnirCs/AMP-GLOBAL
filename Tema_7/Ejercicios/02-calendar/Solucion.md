@@ -3,8 +3,8 @@
 ## Proceso mental
 
 1. **¿Dónde encaja?** → En el detalle de la receta (Nivel 3). No necesita pantalla nueva, sino un modal/sección dentro del detalle para seleccionar fecha y hora.
-2. **¿Qué permisos?** → `Calendar.requestCalendarPermissionsAsync()`. Se pide al pulsar el botón.
-3. **¿Cómo elegimos el calendario?** → Obtenemos todos con `getCalendarsAsync()` y usamos el `isPrimary` o el primero disponible.
+2. **¿Qué permisos?** → `Calendar.requestCalendarPermissions()`. Se pide al pulsar el botón.
+3. **¿Cómo elegimos el calendario?** → Obtenemos todos con `getCalendars()` y usamos el `isPrimary` o el primero disponible.
 4. **¿Cómo calculamos la duración?** → Parseamos `recipe.time` (ej. "90 min") para extraer los minutos y calcular `endDate`.
 5. **¿Qué datos incluimos en el evento?** → Título con nombre de receta, ingredientes como notas, recordatorio 30 min antes.
 
@@ -49,7 +49,7 @@ const handleOpenCalendarModal = () => {
 
 const handleCreateCalendarEvent = async () => {
     // 1. Solicitar permisos
-    const { status } = await Calendar.requestCalendarPermissionsAsync();
+    const { status } = await Calendar.requestCalendarPermissions();
     if (status !== 'granted') {
         Alert.alert(
             'Permisos insuficientes',
@@ -59,7 +59,7 @@ const handleCreateCalendarEvent = async () => {
     }
 
     // 2. Obtener calendarios disponibles
-    const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+    const calendars = await Calendar.getCalendars(Calendar.EntityTypes.EVENT);
     const defaultCalendar = calendars.find(cal => cal.isPrimary) || calendars[0];
 
     if (!defaultCalendar) {
@@ -89,7 +89,7 @@ const handleCreateCalendarEvent = async () => {
 
     // 5. Crear el evento
     try {
-        await Calendar.createEventAsync(defaultCalendar.id, eventDetails);
+        await defaultCalendar.createEvent(eventDetails);
         setShowCalendarModal(false);
         Alert.alert(
             '📅 ¡Evento creado!',

@@ -17,13 +17,14 @@ const ShareTicketsScreen = () => {
         (async () => {
             const { status } = await Contacts.requestPermissionsAsync();
             if (status === 'granted') {
-                const { data } = await Contacts.getContactsAsync({
-                    fields: [Contacts.Fields.PhoneNumbers],
-                });
+                const data = await Contacts.Contact.getAllDetails([
+                    Contacts.ContactField.FULL_NAME,
+                    Contacts.ContactField.PHONES,
+                ]);
 
                 if (data.length > 0) {
                     // Filtramos los contactos que no tengan número de teléfono
-                    const validContacts = data.filter(contact => contact.phoneNumbers && contact.phoneNumbers.length > 0);
+                    const validContacts = data.filter(contact => contact.phones && contact.phones.length > 0);
                     setContacts(validContacts);
                     setFilteredContacts(validContacts);
                 }
@@ -36,18 +37,18 @@ const ShareTicketsScreen = () => {
     useEffect(() => {
         setFilteredContacts(
             contacts.filter(contact =>
-                contact.name && contact.name.toLowerCase().includes(search.toLowerCase())
+                contact.fullName && contact.fullName.toLowerCase().includes(search.toLowerCase())
             )
         );
     }, [search, contacts]);
 
     const handleShareTicket = async (contact) => {
         const ticket = tickets.find(ticket => id == ticket.id);
-        if (contact.phoneNumbers && contact.phoneNumbers.length > 0) {
+        if (contact.phones && contact.phones.length > 0) {
             const isAvailable = await SMS.isAvailableAsync();
             if (isAvailable) {
                 await SMS.sendSMSAsync(
-                    [contact.phoneNumbers[0].number],
+                    [contact.phones[0].number],
                     `¡Recuerda que nos vemos el ${ticket.date} a las ${ticket.time} para ver ${ticket.movieTitle}!`,
                 );
             } else {
@@ -68,9 +69,9 @@ const ShareTicketsScreen = () => {
             }}
         >
             <View className="flex-1">
-                <Text className="text-lg font-bold text-white mb-1">{item.name}</Text>
-                {item.phoneNumbers && item.phoneNumbers.length > 0 && (
-                    <Text className="text-base text-white">{item.phoneNumbers[0].number}</Text>
+                <Text className="text-lg font-bold text-white mb-1">{item.fullName}</Text>
+                {item.phones && item.phones.length > 0 && (
+                    <Text className="text-base text-white">{item.phones[0].number}</Text>
                 )}
             </View>
             <Pressable onPress={() => handleShareTicket(item)} className="p-2">

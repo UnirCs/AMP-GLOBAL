@@ -26,7 +26,7 @@ cd recetapp-stack
 ## Paso 2 — Instalar dependencias
 
 ```bash
-npm install nativewind tailwindcss expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar @expo/vector-icons
+npm install nativewind tailwindcss expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar expo-splash-screen @expo/vector-icons
 ```
 
 > **expo-router** → Sistema de navegación basado en archivos.
@@ -49,11 +49,6 @@ npm install nativewind tailwindcss expo-router react-native-safe-area-context re
     "icon": "./assets/icon.png",
     "scheme": "recetapp",
     "userInterfaceStyle": "dark",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#1a1a2e"
-    },
     "ios": { "supportsTablet": true },
     "android": {
       "adaptiveIcon": {
@@ -64,7 +59,20 @@ npm install nativewind tailwindcss expo-router react-native-safe-area-context re
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
-    }
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#1a1a2e",
+          "image": "./assets/splash-icon.png",
+          "dark": {
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 200
+        }
+      ]
+    ]
   }
 }
 ```

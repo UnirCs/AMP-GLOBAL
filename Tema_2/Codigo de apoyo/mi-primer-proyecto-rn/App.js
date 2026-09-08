@@ -16,7 +16,16 @@ export default function App() {
         <Text style={styles.nombre}>Jesús Pérez Melero</Text>
 
         {/* Puesto */}
-        <Text style={styles.puesto}>Profesor · Desarrollador de Software</Text>
+        <Text style={styles.puesto}>Profesor · Arquitecto de Software</Text>
+
+        {/* Cargo académico */}
+        <Text style={styles.descripcion}>
+          Director Académico del Máster Universitario en Ingeniería de Software y Sistemas Informáticos
+        </Text>
+        {/* Cargo académico */}
+        <Text style={styles.descripcion}>
+          Director Académico del Máster Universitario en Diseño y Desarrollo de Interfaz de Usuario Web
+        </Text>
 
         {/* Separador */}
         <View style={styles.separador} />
@@ -24,9 +33,8 @@ export default function App() {
         {/* Descripción */}
         <Text style={styles.descripcion}>
           Ingeniero de software con amplia experiencia en el desarrollo de
-          aplicaciones móviles y web. Docente en el Máster de Ingeniería de
-          Software y Sistemas Informáticos de UNIR, donde imparte asignaturas
-          relacionadas con el desarrollo de aplicaciones móviles con React Native.
+          aplicaciones móviles y web. Docente en varias titulaciones oficiales de UNIR, donde imparte asignaturas
+          relacionadas con bases de datos, arquitectura de software y el desarrollo de aplicaciones web y móvil.
         </Text>
 
         {/* Enlace / institución */}

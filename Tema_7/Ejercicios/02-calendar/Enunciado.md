@@ -18,13 +18,14 @@ Permite leer y escribir eventos en el calendario nativo del dispositivo.
 import * as Calendar from 'expo-calendar';
 
 // Solicitar permisos
-const { status } = await Calendar.requestCalendarPermissionsAsync();
+const { status } = await Calendar.requestCalendarPermissions();
 
 // Obtener calendarios del dispositivo
-const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+const calendars = await Calendar.getCalendars(Calendar.EntityTypes.EVENT);
+const calendar = calendars.find(cal => cal.isPrimary) || calendars[0];
 
-// Crear un evento
-const eventId = await Calendar.createEventAsync(calendarId, {
+// Crear un evento (método de instancia sobre el calendario elegido)
+const event = await calendar.createEvent({
     title: 'Cocinar Paella',
     startDate: new Date('2026-04-20T18:00:00'),
     endDate: new Date('2026-04-20T19:30:00'),
@@ -35,16 +36,18 @@ const eventId = await Calendar.createEventAsync(calendarId, {
 });
 ```
 
-**Funciones principales:**
+> ⚠️ Desde Expo SDK 57, `expo-calendar` sustituye la antigua API basada en funciones (`getCalendarsAsync`, `createEventAsync(calendarId, ...)`, etc.) por una API de clases: `getCalendars()` devuelve instancias de `ExpoCalendar`, y para crear/listar eventos se llama a métodos sobre esa instancia (`calendar.createEvent(...)`, `calendar.listEvents(...)`). Los métodos antiguos siguen accesibles importando desde `expo-calendar/legacy`, pero están marcados como obsoletos.
+
+**Funciones/métodos principales:**
 
 | Función | Descripción |
 |---|---|
-| `requestCalendarPermissionsAsync()` | Solicita permiso para acceder al calendario |
-| `getCalendarsAsync(entityType)` | Obtiene los calendarios disponibles. `entityType` puede ser `Calendar.EntityTypes.EVENT` o `REMINDER` |
-| `createEventAsync(calendarId, eventDetails)` | Crea un evento en el calendario especificado |
-| `updateEventAsync(eventId, eventDetails)` | Actualiza un evento existente |
-| `deleteEventAsync(eventId)` | Elimina un evento |
-| `getEventsAsync(calendarIds, startDate, endDate)` | Obtiene eventos en un rango de fechas |
+| `requestCalendarPermissions()` | Solicita permiso para acceder al calendario |
+| `getCalendars(entityType)` | Obtiene instancias de `ExpoCalendar`. `entityType` puede ser `Calendar.EntityTypes.EVENT` o `REMINDER` |
+| `calendar.createEvent(eventDetails)` | Crea un evento en ese calendario. Devuelve una instancia de `ExpoCalendarEvent` |
+| `event.update(eventDetails)` | Actualiza un evento existente |
+| `event.delete()` | Elimina un evento |
+| `calendar.listEvents(startDate, endDate)` | Obtiene eventos de ese calendario en un rango de fechas |
 
 **Propiedades del evento (`eventDetails`):**
 
@@ -152,12 +155,12 @@ const parseDuration = (timeString) => {
 ## Checklist
 
 - [ ] `expo-calendar` instalado y funcionando
-- [ ] Permiso de calendario solicitado con `requestCalendarPermissionsAsync()`
-- [ ] Calendarios obtenidos con `getCalendarsAsync()`
+- [ ] Permiso de calendario solicitado con `requestCalendarPermissions()`
+- [ ] Calendarios obtenidos con `getCalendars()`
 - [ ] Calendario primario seleccionado automáticamente
 - [ ] Selector de fecha y hora funcional (DateTimePicker o alternativa)
 - [ ] Duración calculada a partir de `recipe.time`
-- [ ] Evento creado con `createEventAsync()` con título, ubicación, notas e ingredientes
+- [ ] Evento creado con `calendar.createEvent()` con título, ubicación, notas e ingredientes
 - [ ] Recordatorio (alarm) configurado 30 minutos antes
 - [ ] `Alert` de confirmación al crear el evento
 - [ ] Gestión de errores y permisos denegados

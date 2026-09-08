@@ -7,7 +7,7 @@ Partimos del ejercicio 2 (Tabs + Stack) y añadimos una capa exterior: el Drawer
 1. **¿Cómo se integra el Drawer?** → El Drawer es el contenedor exterior. Dentro de él están los Tabs (ejercicio 2), que a su vez contienen el Stack. La jerarquía completa es: `Drawer > Tabs > Stack`.
 2. **¿Qué secciones tiene el Drawer?** → 3: "Inicio" (que son los Tabs), "Consejos de cocina" y "Sobre nosotros".
 3. **¿Dónde va el `RecipesProvider`?** → Sigue en los Tabs layout, ya que las pantallas del drawer (tips, about) no necesitan acceso a recetas.
-4. **¿Necesitamos dependencias nuevas?** → Sí: `@react-navigation/drawer`, `react-native-gesture-handler` y `react-native-reanimated`.
+4. **¿Necesitamos dependencias nuevas?** → Sí: `react-native-gesture-handler` y `react-native-reanimated` (desde SDK 56, `expo-router/drawer` ya trae vendorizados los componentes del drawer, sin necesitar `@react-navigation/drawer`).
 5. **¿Cómo personalizamos el drawer?** → Con un componente `RecetAppDrawer` que usa `DrawerContentScrollView` y `DrawerItemList`.
 
 ---
@@ -24,13 +24,13 @@ cd recetapp-drawer
 ## Paso 2 — Instalar dependencias
 
 ```bash
-npm install nativewind tailwindcss expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar @expo/vector-icons @react-navigation/drawer react-native-gesture-handler react-native-reanimated
+npm install nativewind tailwindcss expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar @expo/vector-icons react-native-gesture-handler react-native-reanimated
 ```
 
 > **Nuevas dependencias respecto al ejercicio 2:**
-> - `@react-navigation/drawer` → componentes del drawer (DrawerContentScrollView, DrawerItemList, etc.).
 > - `react-native-gesture-handler` → manejo de gestos (deslizar para abrir el drawer).
 > - `react-native-reanimated` → animaciones fluidas del drawer.
+> - Los componentes del drawer (`DrawerContentScrollView`, `DrawerItemList`, etc.) no requieren instalación aparte: se importan directamente de `expo-router/drawer`.
 
 ---
 
@@ -76,7 +76,7 @@ El componente personalizado del drawer añade una cabecera visual con el brandin
 ```javascript
 import React from 'react';
 import { View, Text } from "react-native";
-import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
+import { DrawerContentScrollView, DrawerItemList } from "expo-router/drawer";
 
 const RecetAppDrawer = (props) => {
     return (
@@ -398,7 +398,7 @@ import { View, Text, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions } from 'expo-router/react-navigation';
 
 const tips = {
     'Técnicas básicas': [
@@ -481,7 +481,7 @@ export default function TipsScreen() {
 
 - **Botón hamburguesa** → `navigation.dispatch(DrawerActions.openDrawer())` abre el drawer programáticamente.
 - **`useNavigation()`** → hook de Expo Router para acceder al objeto `navigation` de React Navigation.
-- **`DrawerActions`** → importado de `@react-navigation/native`, contiene acciones para controlar el drawer.
+- **`DrawerActions`** → importado de `expo-router/react-navigation` (reexporta el equivalente vendorizado de `@react-navigation/native`), contiene acciones para controlar el drawer.
 - **`SafeAreaView`** → necesario porque esta pantalla NO tiene cabecera de Stack ni de Drawer (`headerShown: false`).
 - Los consejos se definen como datos estáticos en el propio componente. En una app real vendrían de una API.
 
@@ -495,7 +495,7 @@ import { View, Text, ScrollView, Pressable, Linking, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions } from 'expo-router/react-navigation';
 
 export default function AboutScreen() {
     const navigation = useNavigation();

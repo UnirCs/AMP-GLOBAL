@@ -87,13 +87,14 @@ export default function ShareRecipeScreen() {
         (async () => {
             const { status } = await Contacts.requestPermissionsAsync();
             if (status === 'granted') {
-                const { data } = await Contacts.getContactsAsync({
-                    fields: [Contacts.Fields.PhoneNumbers],
-                });
+                const data = await Contacts.Contact.getAllDetails([
+                    Contacts.ContactField.FULL_NAME,
+                    Contacts.ContactField.PHONES,
+                ]);
                 if (data.length > 0) {
                     // Filtrar solo contactos con número de teléfono
                     const validContacts = data.filter(
-                        contact => contact.phoneNumbers && contact.phoneNumbers.length > 0
+                        contact => contact.phones && contact.phones.length > 0
                     );
                     setContacts(validContacts);
                     setFilteredContacts(validContacts);
@@ -112,7 +113,7 @@ export default function ShareRecipeScreen() {
     useEffect(() => {
         setFilteredContacts(
             contacts.filter(contact =>
-                contact.name && contact.name.toLowerCase().includes(search.toLowerCase())
+                contact.fullName && contact.fullName.toLowerCase().includes(search.toLowerCase())
             )
         );
     }, [search, contacts]);
@@ -124,7 +125,7 @@ export default function ShareRecipeScreen() {
             return;
         }
 
-        if (!contact.phoneNumbers || contact.phoneNumbers.length === 0) {
+        if (!contact.phones || contact.phones.length === 0) {
             Alert.alert('Error', 'Este contacto no tiene número de teléfono.');
             return;
         }
@@ -141,7 +142,7 @@ export default function ShareRecipeScreen() {
                 `¡Descarga RecetApp para ver los ingredientes y el paso a paso!`;
 
             await SMS.sendSMSAsync(
-                [contact.phoneNumbers[0].number],
+                [contact.phones[0].number],
                 message
             );
         } else {
@@ -159,10 +160,10 @@ export default function ShareRecipeScreen() {
                 style={{ borderWidth: 1, borderColor: '#374151' }}
             >
                 <View className="flex-1 mr-3">
-                    <Text className="text-lg font-bold text-white">{item.name}</Text>
-                    {item.phoneNumbers && item.phoneNumbers.length > 0 && (
+                    <Text className="text-lg font-bold text-white">{item.fullName}</Text>
+                    {item.phones && item.phones.length > 0 && (
                         <Text className="text-gray-400 text-sm mt-1">
-                            {item.phoneNumbers[0].number}
+                            {item.phones[0].number}
                         </Text>
                     )}
                 </View>
@@ -249,8 +250,8 @@ export default function ShareRecipeScreen() {
 **Desglose:**
 
 1. **`Contacts.requestPermissionsAsync()`** → pide permiso al usuario. Solo se muestra una vez; después iOS/Android recuerda la decisión.
-2. **`Contacts.getContactsAsync({ fields: [Contacts.Fields.PhoneNumbers] })`** → trae contactos con sus números de teléfono. Especificar `fields` es importante para rendimiento: no traemos datos innecesarios.
-3. **Filtro de validez** → `data.filter(c => c.phoneNumbers?.length > 0)` elimina contactos sin número (ej. contactos solo con email).
+2. **`Contacts.Contact.getAllDetails([Contacts.ContactField.FULL_NAME, Contacts.ContactField.PHONES])`** → trae solo los campos indicados de todos los contactos, sin crear instancias completas de `Contact` (más rápido). Especificar los campos es importante para rendimiento: no traemos datos innecesarios. Es la API de clases introducida en Expo SDK 57; la antigua `getContactsAsync` sigue disponible en `expo-contacts/legacy` pero está obsoleta.
+3. **Filtro de validez** → `data.filter(c => c.phones?.length > 0)` elimina contactos sin número (ej. contactos solo con email).
 4. **Filtro de búsqueda** → un segundo `useEffect` observa `search` y filtra por nombre. Es reactivo: al escribir, la lista se actualiza instantáneamente.
 5. **`SMS.isAvailableAsync()`** → verifica que el dispositivo puede enviar SMS. En simuladores esto suele devolver `false`.
 6. **`SMS.sendSMSAsync()`** → abre la app de SMS nativa con el número y mensaje prellenados. El usuario decide si enviar o no.

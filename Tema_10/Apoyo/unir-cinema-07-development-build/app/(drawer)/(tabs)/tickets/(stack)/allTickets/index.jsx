@@ -60,9 +60,9 @@ const AllTicketsScreen = () => {
     };
 
     const handleCreateCalendarEvent = async (ticket) => {
-        const { status } = await Calendar.requestCalendarPermissionsAsync();
+        const { status } = await Calendar.requestCalendarPermissions();
         if (status === 'granted') {
-            const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+            const calendars = await Calendar.getCalendars(Calendar.EntityTypes.EVENT);
             const defaultCalendar = calendars.find(cal => cal.isPrimary) || calendars[0];
 
             const [hour, minute] = ticket.time.split(':').map(Number);
@@ -80,7 +80,7 @@ const AllTicketsScreen = () => {
             };
 
             try {
-                await Calendar.createEventAsync(defaultCalendar.id, eventDetails);
+                await defaultCalendar.createEvent(eventDetails);
                 Alert.alert('¡Todo listo!', 'Se ha añadido un evento a tu calendario');
             } catch (error) {
                 console.error('Error creando evento en calendario:', error);

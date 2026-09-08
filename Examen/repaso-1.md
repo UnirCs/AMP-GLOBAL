@@ -375,17 +375,17 @@ Para añadir el vuelo al calendario del usuario:
 
 ```jsx
 const addFlightToCalendar = async (flight) => {
-  const { status } = await Calendar.requestCalendarPermissionsAsync();
+  const { status } = await Calendar.requestCalendarPermissions();
   if (status !== 'granted') return;
 
-  const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+  const calendars = await Calendar.getCalendars(Calendar.EntityTypes.EVENT);
   const writable = calendars.find(cal => cal.allowsModifications);
   if (!writable) {
     Alert.alert('No hay calendario editable disponible');
     return;
   }
 
-  await Calendar.createEventAsync(writable.id, {
+  await writable.createEvent({
     title: `Vuelo ${flight.code}: ${flight.origin} → ${flight.destination}`,
     startDate: new Date(flight.departure),
     endDate: new Date(flight.arrival),
@@ -394,7 +394,7 @@ const addFlightToCalendar = async (flight) => {
 };
 ```
 
-¿Qué afirmación describe correctamente el comportamiento de `await Calendar.requestCalendarPermissionsAsync()` en esta función?
+¿Qué afirmación describe correctamente el comportamiento de `await Calendar.requestCalendarPermissions()` en esta función?
 
 A) Es una llamada síncrona que devuelve el objeto `{ status }` de inmediato; el `await` es innecesario y podría eliminarse sin cambiar el comportamiento.
 
@@ -402,14 +402,14 @@ B) Es asíncrona: devuelve una Promise que se resuelve con un objeto `{ status }
 
 C) El `await` bloquea el hilo principal de JavaScript hasta que el usuario responde, congelando la interfaz mientras el diálogo está abierto.
 
-D) `requestCalendarPermissionsAsync()` lanza una excepción si el usuario deniega el permiso, por lo que debería envolverse en `try/catch` en lugar de comprobar `status`.
+D) `requestCalendarPermissions()` lanza una excepción si el usuario deniega el permiso, por lo que debería envolverse en `try/catch` en lugar de comprobar `status`.
 
 <details>
 <summary><strong>Ver solución</strong></summary>
 
 ✅ **Respuesta correcta: B**
 
-**Por qué es correcta:** `requestCalendarPermissionsAsync()` es una función asíncrona que devuelve una Promise. Al resolverse entrega un objeto con la propiedad `status` (`'granted'`, `'denied'`…) según la respuesta del usuario al diálogo del sistema. El `await` suspende la ejecución de la función `async` —sin bloquear el hilo de JS— hasta que la promesa se resuelve; entonces se evalúa `status` y, si no es `'granted'`, la función hace `return` y no llega a acceder al calendario.
+**Por qué es correcta:** `requestCalendarPermissions()` es una función asíncrona que devuelve una Promise. Al resolverse entrega un objeto con la propiedad `status` (`'granted'`, `'denied'`…) según la respuesta del usuario al diálogo del sistema. El `await` suspende la ejecución de la función `async` —sin bloquear el hilo de JS— hasta que la promesa se resuelve; entonces se evalúa `status` y, si no es `'granted'`, la función hace `return` y no llega a acceder al calendario.
 
 **Por qué las demás no:**
 - **A)** No es síncrona: devuelve una Promise. Sin el `await`, la desestructuración `{ status }` se haría sobre la propia Promise (no sobre su valor resuelto) y `status` sería `undefined`, rompiendo la comprobación.
@@ -521,32 +521,33 @@ D) `<Text className="font-['Montserrat-Variable']">Título</Text>` — NativeWin
 Al recuperar contactos para sugerir compañeros de viaje:
 
 ```jsx
-const { data: contacts } = await Contacts.getContactsAsync({
-  fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Name],
-});
+const contacts = await Contacts.Contact.getAllDetails([
+  Contacts.ContactField.PHONES,
+  Contacts.ContactField.FULL_NAME,
+]);
 ```
 
-¿Cuál es la función del parámetro `fields`?
+¿Cuál es la función del array de campos que se pasa a `getAllDetails()`?
 
-A) Restringe qué campos se recuperan por contacto, reduciendo los datos devueltos; sin él, el sistema podría devolver todos los campos disponibles (emails, cumpleaños, direcciones…), lo que es más lento y consume más memoria.
+A) Restringe qué campos se recuperan por contacto, reduciendo los datos devueltos; sin especificarlo (usando `Contact.getAll()` en su lugar), el sistema traería instancias completas de `Contact`, lo que es más lento y consume más memoria.
 
 B) Filtra los contactos para devolver solo los que tienen valores en esos campos; los contactos sin teléfono quedan excluidos del resultado.
 
 C) Define el orden en que se muestran los campos dentro de cada contacto devuelto.
 
-D) Es obligatorio: sin `fields`, `getContactsAsync()` lanza una excepción.
+D) Hay que incluir explícitamente el campo del identificador para que cada resultado lleve su `id`; si se omite, los objetos devueltos no tendrían forma de identificar a qué contacto pertenecen.
 
 <details>
 <summary><strong>Ver solución</strong></summary>
 
 ✅ **Respuesta correcta: A**
 
-**Por qué es correcta:** `fields` controla qué datos se incluyen en cada objeto de contacto. Sin especificarlo, el sistema puede traer todos los campos disponibles, aumentando el tiempo de respuesta y el uso de memoria innecesariamente.
+**Por qué es correcta:** el array de campos controla qué datos se incluyen en cada objeto devuelto. `getAllDetails()` es precisamente el método optimizado para pedir solo los campos necesarios sin crear instancias completas de `Contact`; si se necesitaran todos los datos y métodos de cada contacto, se usaría `Contact.getAll()`, más lento y con mayor consumo de memoria.
 
 **Por qué las demás no:**
-- **B)** `fields` no filtra qué contactos se devuelven, sino qué campos lleva cada uno.
-- **C)** No define ningún orden de presentación.
-- **D)** No es obligatorio; sin él se devuelven (potencialmente) todos los campos, no se lanza una excepción.
+- **B)** El array de campos no filtra qué contactos se devuelven, sino qué campos lleva cada uno.
+- **C)** No define el orden de presentación de los campos dentro de cada contacto.
+- **D)** El `id` del contacto se incluye siempre automáticamente en cada objeto devuelto, sin necesidad de pedirlo en el array de campos.
 
 </details>
 

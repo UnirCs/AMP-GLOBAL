@@ -633,7 +633,7 @@ Añadir al final del drawer, después de `<DrawerItemList>`, un botón de cerrar
 ```javascript
 import React from 'react';
 import { View, Text, Pressable } from "react-native";
-import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
+import { DrawerContentScrollView, DrawerItemList } from "expo-router/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from '../context/AuthContext';
 

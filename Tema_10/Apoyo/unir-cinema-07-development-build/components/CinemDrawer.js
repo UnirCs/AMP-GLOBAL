@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, View, Text, Pressable, Alert} from "react-native";
-import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
+import {DrawerContentScrollView, DrawerItemList} from "expo-router/drawer";
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';

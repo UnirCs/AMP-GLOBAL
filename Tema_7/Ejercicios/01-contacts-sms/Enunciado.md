@@ -20,30 +20,35 @@ import * as Contacts from 'expo-contacts';
 // Solicitar permisos
 const { status } = await Contacts.requestPermissionsAsync();
 
-// Obtener contactos (con campos específicos)
-const { data } = await Contacts.getContactsAsync({
-    fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Emails],
-});
+// Obtener contactos (con campos específicos), usando la API de clases
+const data = await Contacts.Contact.getAllDetails([
+    Contacts.ContactField.PHONES,
+    Contacts.ContactField.EMAILS,
+]);
 ```
 
-**Funciones principales:**
+> ⚠️ Desde Expo SDK 57, `expo-contacts` sustituye la antigua API basada en `getContactsAsync`/`Contacts.Fields` por una API de clases (`Contacts.Contact`). Los métodos antiguos siguen accesibles importando desde `expo-contacts/legacy`, pero están marcados como obsoletos.
+
+**Funciones/métodos principales:**
 
 | Función | Descripción |
 |---|---|
 | `requestPermissionsAsync()` | Solicita permiso para acceder a los contactos. Devuelve `{ status }` |
 | `getPermissionsAsync()` | Comprueba el estado del permiso sin solicitarlo |
-| `getContactsAsync(options)` | Obtiene los contactos. `options.fields` especifica qué datos traer |
-| `getContactByIdAsync(id)` | Obtiene un contacto por su ID |
+| `Contact.getAllDetails(fields, options?)` | Obtiene solo los campos indicados de todos los contactos (rápido, sin crear instancias completas) |
+| `Contact.getAll(options?)` | Obtiene instancias completas de `Contact`, con métodos como `getPhones()`, `getFullName()`, etc. |
+| `Contact.get(id)` / `new Contact(id)` | Obtiene un contacto por su ID |
 
-**Campos disponibles (`Contacts.Fields`):**
+**Campos disponibles (`Contacts.ContactField`):**
 
 | Campo | Descripción |
 |---|---|
-| `PhoneNumbers` | Números de teléfono |
-| `Emails` | Direcciones de email |
-| `FirstName` | Nombre |
-| `LastName` | Apellido |
-| `Image` | Imagen del contacto |
+| `PHONES` | Números de teléfono |
+| `EMAILS` | Direcciones de email |
+| `GIVEN_NAME` | Nombre |
+| `FAMILY_NAME` | Apellido |
+| `FULL_NAME` | Nombre completo |
+| `IMAGE` | Imagen del contacto |
 
 > 📖 [expo-contacts — Documentación](https://docs.expo.dev/versions/latest/sdk/contacts/)
 
@@ -155,7 +160,7 @@ En la pantalla de detalle de la receta (`recipes/[idRecipe]/index.jsx`), añade 
 La pantalla debe:
 
 1. **Solicitar permisos** de contactos al montar el componente (`useEffect`).
-2. **Cargar los contactos** con `Contacts.getContactsAsync({ fields: [Contacts.Fields.PhoneNumbers] })`.
+2. **Cargar los contactos** con `Contacts.Contact.getAllDetails([Contacts.ContactField.FULL_NAME, Contacts.ContactField.PHONES])`.
 3. **Filtrar contactos válidos** (que tengan al menos un número de teléfono).
 4. **Barra de búsqueda** (`TextInput`) que filtra contactos por nombre en tiempo real.
 5. **Lista de contactos** (`FlatList`) mostrando nombre y número de teléfono.
@@ -203,7 +208,7 @@ app/(drawer)/(tabs)/(stack)/
 - [ ] `expo-contacts` instalado y funcionando
 - [ ] `expo-sms` instalado y funcionando
 - [ ] Permiso de contactos solicitado con `requestPermissionsAsync()`
-- [ ] Contactos cargados con `getContactsAsync()` filtrando por `PhoneNumbers`
+- [ ] Contactos cargados con `Contact.getAllDetails()` filtrando por `PHONES`
 - [ ] Filtro de contactos que tengan número de teléfono
 - [ ] Barra de búsqueda que filtra contactos por nombre
 - [ ] `FlatList` con contactos renderizados

@@ -2,7 +2,7 @@
 
 # ==============================================================
 #  update-expo-version.sh
-#  Actualiza Expo a la versión ^55.0.0, corrige dependencias
+#  Actualiza Expo a la versión ^57.0.0, corrige dependencias
 #  y ejecuta el diagnóstico del proyecto.
 #
 #  Uso:
@@ -102,8 +102,8 @@ cd "$PROJECT_DIR"
 
 # ── Paso 1: Instalar la versión objetivo de Expo ──────────────
 run_step 1 \
-  "Instalar expo@^55.0.0" \
-  npm install expo@^55.0.0
+  "Instalar expo@^57.0.0" \
+  npm install expo@^57.0.0
 
 # ── Paso 2: Corregir versiones de dependencias compatibles ────
 run_step 2 \

@@ -23,7 +23,7 @@ Drawer
 
 ### Drawer Navigator en Expo Router
 
-El Drawer de Expo Router utiliza `@react-navigation/drawer`, que a su vez requiere `react-native-gesture-handler` y `react-native-reanimated`. El Drawer crea un menú lateral deslizable que contiene enlaces a las distintas secciones de la app.
+Desde Expo SDK 56, el Drawer de Expo Router ya no depende de `@react-navigation/drawer`: sus componentes (`DrawerContentScrollView`, `DrawerItemList`, etc.) vienen vendorizados dentro del propio paquete `expo-router` y se importan desde `expo-router/drawer`. Aun así, sigue requiriendo `react-native-gesture-handler` y `react-native-reanimated` como dependencias nativas. El Drawer crea un menú lateral deslizable que contiene enlaces a las distintas secciones de la app.
 
 ```jsx
 import { Drawer } from "expo-router/drawer";
@@ -79,7 +79,7 @@ import { Drawer } from "expo-router/drawer";
 Puedes reemplazar el contenido por defecto del drawer con un componente personalizado. Esto permite añadir una cabecera con logo, información del usuario, etc.:
 
 ```jsx
-import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
+import { DrawerContentScrollView, DrawerItemList } from "expo-router/drawer";
 
 const CustomDrawer = (props) => {
     return (
@@ -105,16 +105,16 @@ const CustomDrawer = (props) => {
 
 | Componente | De dónde importarlo | Descripción |
 |---|---|---|
-| `DrawerContentScrollView` | `@react-navigation/drawer` | ScrollView preparado para el drawer |
-| `DrawerItemList` | `@react-navigation/drawer` | Renderiza los `Drawer.Screen` como ítems de lista |
-| `DrawerItem` | `@react-navigation/drawer` | Un ítem individual personalizado |
+| `DrawerContentScrollView` | `expo-router/drawer` | ScrollView preparado para el drawer |
+| `DrawerItemList` | `expo-router/drawer` | Renderiza los `Drawer.Screen` como ítems de lista |
+| `DrawerItem` | `expo-router/drawer` | Un ítem individual personalizado |
 
 > 📖 [Custom drawer content — React Navigation](https://reactnavigation.org/docs/drawer-navigator/#providing-a-custom-drawercontent)
 
 ### Abrir/cerrar el Drawer programáticamente
 
 ```jsx
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions } from 'expo-router/react-navigation';
 import { useNavigation } from 'expo-router';
 
 const navigation = useNavigation();
@@ -136,7 +136,7 @@ navigation.dispatch(DrawerActions.toggleDrawer());
 El Drawer requiere dependencias adicionales no incluidas en ejercicios anteriores:
 
 ```bash
-npm install @react-navigation/drawer react-native-gesture-handler react-native-reanimated
+npm install react-native-gesture-handler react-native-reanimated
 ```
 
 Y es necesario añadir el plugin de Reanimated al `babel.config.js`:
@@ -171,7 +171,7 @@ cd recetapp-drawer
 ### 1.2 — Instalar dependencias
 
 ```bash
-npm install nativewind tailwindcss expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar @expo/vector-icons @react-navigation/drawer react-native-gesture-handler react-native-reanimated
+npm install nativewind tailwindcss expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar @expo/vector-icons react-native-gesture-handler react-native-reanimated
 ```
 
 ### 1.3 — Configurar NativeWind + Expo Router + Reanimated
@@ -245,7 +245,7 @@ El Drawer layout debe:
 
 Crea un componente que:
 
-1. Importa `DrawerContentScrollView` y `DrawerItemList` de `@react-navigation/drawer`.
+1. Importa `DrawerContentScrollView` y `DrawerItemList` de `expo-router/drawer`.
 2. Muestra una cabecera con:
    - Un fondo de color temático (naranja/cocina).
    - El nombre "RecetApp" y un emoji 👨‍🍳.
@@ -284,7 +284,7 @@ En las pantallas que no tienen cabecera de Stack (tips, about, y opcionalmente e
 
 ```jsx
 import { useNavigation } from 'expo-router';
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions } from 'expo-router/react-navigation';
 
 const navigation = useNavigation();
 
@@ -372,7 +372,7 @@ Antes de dar por finalizado el ejercicio, verifica que has implementado:
 
 - [ ] `Drawer` de Expo Router con 3 secciones
 - [ ] Componente `drawerContent` personalizado (`RecetAppDrawer`)
-- [ ] `DrawerContentScrollView` + `DrawerItemList` de `@react-navigation/drawer`
+- [ ] `DrawerContentScrollView` + `DrawerItemList` de `expo-router/drawer`
 - [ ] `drawerIcon` con iconos de `@expo/vector-icons` para cada sección
 - [ ] `drawerActiveTintColor` y `drawerInactiveTintColor` personalizados
 - [ ] `overlayColor` para oscurecer el fondo cuando el drawer está abierto

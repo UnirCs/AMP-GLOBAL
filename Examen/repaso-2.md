@@ -398,10 +398,10 @@ Para añadir el entrenamiento al calendario:
 
 ```jsx
 const addWorkoutToCalendar = async (workout) => {
-  const { status } = await Calendar.requestCalendarPermissionsAsync();
+  const { status } = await Calendar.requestCalendarPermissions();
   if (status !== 'granted') return;
 
-  const calendars = await Calendar.getCalendarsAsync(
+  const calendars = await Calendar.getCalendars(
     Calendar.EntityTypes.EVENT
   );
 
@@ -411,7 +411,7 @@ const addWorkoutToCalendar = async (workout) => {
     return;
   }
 
-  await Calendar.createEventAsync(writable.id, {
+  await writable.createEvent({
     title: `UnirFit: ${workout.name}`,
     startDate: new Date(workout.start),
     endDate: new Date(workout.start + 60 * 60 * 1000),
@@ -420,7 +420,7 @@ const addWorkoutToCalendar = async (workout) => {
 };
 ```
 
-¿Qué hace exactamente `Calendar.EntityTypes.EVENT` como argumento de `getCalendarsAsync()`?
+¿Qué hace exactamente `Calendar.EntityTypes.EVENT` como argumento de `getCalendars()`?
 
 A) Filtra para devolver únicamente los calendarios de tipo evento, excluyendo otros (como los de recordatorios/tareas en iOS).
 
@@ -428,7 +428,7 @@ B) Crea una nueva entidad de tipo `EVENT` en el sistema de calendarios si no exi
 
 C) Convierte todos los calendarios al formato estándar iCal/.ics antes de devolverlos.
 
-D) Es el valor por defecto y no aplica filtro; `getCalendarsAsync()` siempre devuelve todos los calendarios.
+D) Es el valor por defecto y no aplica filtro; `getCalendars()` siempre devuelve todos los calendarios.
 
 <details>
 <summary><strong>Ver solución</strong></summary>
@@ -458,13 +458,13 @@ const inviteFriends = async () => {
     return;
   }
 
-  const { data: contacts } = await Contacts.getContactsAsync({
-    fields: [Contacts.Fields.PhoneNumbers],
-  });
+  const contacts = await Contacts.Contact.getAllDetails([
+    Contacts.ContactField.PHONES,
+  ]);
 
   const phones = contacts
-    .filter(c => c.phoneNumbers?.length > 0)
-    .map(c => c.phoneNumbers[0].number);
+    .filter(c => c.phones?.length > 0)
+    .map(c => c.phones[0].number);
 
   await SMS.sendSMSAsync(phones, 'Únete a mi reto en UnirFit 💪');
 };
@@ -472,7 +472,7 @@ const inviteFriends = async () => {
 
 El usuario **denegó de forma permanente** el permiso de contactos en los ajustes. ¿Qué ocurre al ejecutar `inviteFriends()`?
 
-A) La función continúa, pero `getContactsAsync()` devuelve un array vacío y `phones` queda vacío, por lo que `sendSMSAsync` no envía nada.
+A) La función continúa, pero `getAllDetails()` devuelve un array vacío y `phones` queda vacío, por lo que `sendSMSAsync` no envía nada.
 
 B) `requestPermissionsAsync()` abre automáticamente Ajustes para que el usuario active el permiso.
 
@@ -488,7 +488,7 @@ D) `requestPermissionsAsync()` devuelve `status: 'denied'` sin mostrar diálogo 
 **Por qué es correcta:** con el permiso denegado permanentemente, `requestPermissionsAsync()` resuelve con `status: 'denied'` sin volver a mostrar el diálogo del sistema. El `if` lo detecta, muestra la alerta y hace `return` antes de tocar contactos o SMS.
 
 **Por qué las demás no:**
-- **A)** No se llega a `getContactsAsync()`: el `return` corta antes.
+- **A)** No se llega a `getAllDetails()`: el `return` corta antes.
 - **B)** La API no abre Ajustes por sí sola.
 - **C)** No lanza excepción: resuelve con un `status`.
 

@@ -56,15 +56,16 @@ Tras la instalación, el `package.json` debería quedar similar a:
     "web": "expo start --web"
   },
   "dependencies": {
-    "babel-preset-expo": "~55.0.8",
-    "expo": "^55.0.11",
-    "expo-haptics": "~55.0.11",
-    "expo-status-bar": "~55.0.5",
+    "babel-preset-expo": "~57.0.0",
+    "expo": "^57.0.21",
+    "expo-haptics": "~57.0.2",
+    "expo-splash-screen": "~57.0.8",
+    "expo-status-bar": "~57.0.1",
     "nativewind": "^4.2.1",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "react-native": "0.83.4",
-    "react-native-safe-area-context": "~5.6.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0",
     "tailwindcss": "^3.4.18"
   },
   "private": true
@@ -84,11 +85,6 @@ Tras la instalación, el `package.json` debería quedar similar a:
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#111827"
-    },
     "ios": {
       "supportsTablet": true
     },
@@ -101,7 +97,20 @@ Tras la instalación, el `package.json` debería quedar similar a:
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
-    }
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#111827",
+          "image": "./assets/splash-icon.png",
+          "dark": {
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 200
+        }
+      ]
+    ]
   }
 }
 ```
