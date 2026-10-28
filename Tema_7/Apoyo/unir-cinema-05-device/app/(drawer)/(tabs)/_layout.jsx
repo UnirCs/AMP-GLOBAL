@@ -26,7 +26,7 @@ const TabsLayout = () => {
                     }}
                 />
                 <Tabs.Screen
-                    name="tickets"
+                    name="tickets/(stack)"
                     options={{
                         title: "Tickets",
                         tabBarIcon: ({ color, size }) => (
