@@ -5,21 +5,23 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
     "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "LSApplicationQueriesSchemes": [
           "linkedin"
         ]
-      }
+      },
+      "bundleIdentifier": "com.unircs.UNIRCinema06FirebaseAuthNative"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.unircs.UNIRCinema06FirebaseAuthNative"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -38,6 +40,14 @@
             "backgroundColor": "#000000"
           },
           "imageWidth": 200
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "enableSceneSupport": true
+          }
         }
       ]
     ]
