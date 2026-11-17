@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "UNIR-Cinema-06-Firebase-Auth",
-    "slug": "UNIR-Cinema-06-Firebase-Auth",
+    "name": "UNIR-Cinema-06-Firebase-Auth-Native",
+    "slug": "UNIR-Cinema-06-Firebase-Auth-Native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
